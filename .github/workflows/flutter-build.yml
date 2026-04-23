@@ -163,6 +163,11 @@ jobs:
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
 
+      - name: Inject Secrets into source code
+        run: |
+          sed -i 's/rs-ny.rustdesk.com/${{ secrets.RENDEZVOUS_SERVER }}/g' src/common.rs
+          sed -i 's/OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=/${{ secrets.RS_PUB_KEY }}/g' src/common.rs
+
       - name: Build rustdesk
         run: |
           # Windows: build RustDesk
